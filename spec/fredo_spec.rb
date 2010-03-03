@@ -51,12 +51,12 @@ describe Fredo do
   context "parameters" do
     it "should parse url parameters" do
       
-      Fredo.get 'http://www.twitter.com/:name.:format' do |params|
+      Fredo.get 'http://www.twitter.com/:name' do |params|
         [200, {"Content-Type" => "text/html"}, "It ain't #{params[:name]} talking"]
       end
       
       response = open('http://www.twitter.com/sam')
-      response.read.should include('sam')
+      response.read.should include('It ain\'t sam')
       
     end
   end
