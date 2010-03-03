@@ -4,7 +4,7 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "fredo"
+    gem.name = "Fredo"
     gem.summary = %Q{TODO: one-line summary of your gem}
     gem.description = %Q{Mocks web services by plugging Net::Http straight into Rack}
     gem.email = "ilpoldo@gmail.com"
@@ -18,7 +18,7 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
-require 'spec/rake/spectask'
+require 'rspec/rake/spectask'
 Spec::Rake::SpecTask.new(:spec) do |spec|
   spec.libs << 'lib' << 'spec'
   spec.spec_files = FileList['spec/**/*_spec.rb']

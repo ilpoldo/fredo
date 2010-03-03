@@ -1,7 +1,20 @@
-= fredo
+= Fredo
+===== Mocks web services by plugging Net::Http straight into Rack
 
-Description goes here.
+I know it was you, Fredo[http://www.youtube.com/watch?v=FcFlp6kl508]
 
+This project is heavily inspired by fakeweb.
+
+It started when I needed to mock comprehensively a project in cucumber.
+I want a way to mock some web services in an easy DSL like sinatra; my conclusion
+was to build a Rack adapter that plugs straight into Net::Http requests.
+
+---
+== Bugs
+This is in a very early stage, feel free to provide feedback. Please use the Github
+issues.
+
+---
 == Note on Patches/Pull Requests
  
 * Fork the project.
@@ -14,4 +27,4 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2010 ilpoldo. See LICENSE for details.
+Copyright (c) 2010 Leandro Pedroni. See LICENSE for details.
