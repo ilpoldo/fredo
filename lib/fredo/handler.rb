@@ -7,7 +7,7 @@ module Fredo
       @env      = env
       @request  = Rack::Request.new(env)
       @params   = @request.params
-      @response = Rack::Response.new([],200,{})
+      @response = Response.new([],200,{})
       
       dispatch!
       
@@ -73,21 +73,42 @@ module Fredo
     
     def perform!(&block)
       if block_given?
-        status, header, body = instance_eval(&block)
-        @response.status    = status
-        @response.write body
-      else
-        @response.body   = ["OK"]
-        @response.status = 200
+        @response['Content-Type']= 'text/html'
+        
+        res = instance_eval(&block)
+        case
+        when res.respond_to?(:to_str)
+          @response.body = [res]
+        when res.respond_to?(:to_ary)
+          res = res.to_ary
+          if Fixnum === res.first
+            if res.length == 3
+              @response.status, headers, body = res
+              @response.body = body if body
+              headers.each { |k, v| @response.headers[k] = v } if headers
+            elsif res.length == 2
+              @response.status = res.first
+              @response.body   = res.last
+            else
+              raise TypeError, "#{res.inspect} not supported"
+            end
+          else
+            @response.body = res
+          end
+        when res.respond_to?(:each)
+          @response.body = res
+        when (100...599) === res
+          @response.status = res
+        end
+        
       end
     rescue ::Exception => boom
       handle_exception!(boom)
     end
     
     def respond!
-      # [@response.headers, @response.body]
-      @response.finish
-      [@response.status, @response.header, @response.body.join("\n")]
+      status, header, body = @response.finish
+      [status, header, body]
     end
     
   end

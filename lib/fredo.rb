@@ -6,6 +6,7 @@ require 'fredo/ext/net_http'
 require 'fredo/stub_socket'
 require 'fredo/registry'
 require 'fredo/handler'
+require 'fredo/response'
 
 module Fredo
 

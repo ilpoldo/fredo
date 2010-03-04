@@ -24,7 +24,7 @@ describe Fredo do
       body = "Today ain't your lucky day, kid."
       
       Fredo.get 'http://www.google.com' do
-        [200, {"Content-Type" => "text/html"}, body]
+        body
       end
       
       response = open('http://www.google.com')
@@ -52,7 +52,7 @@ describe Fredo do
     it "parses url parameters" do
       
       Fredo.get 'http://www.twitter.com/:name' do
-        [200, {"Content-Type" => "text/html"}, "It ain't #{params[:name]} talking"]
+        "It ain't #{params[:name]} talking"
       end
       
       response = open('http://www.twitter.com/sam')
@@ -61,7 +61,7 @@ describe Fredo do
     
     it "plays nice with regex" do
       Fredo.get 'http://www.google.com/*' do
-        [200, {"Content-Type" => "text/html"}, "Everything google!"]
+        "Everything google!"
       end
 
       response = open('http://google.com/something')
