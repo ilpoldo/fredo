@@ -73,12 +73,15 @@ module Fredo
     
     def perform!(&block)
       if block_given?
-        status, header, body = yield(params)
+        status, header, body = instance_eval(&block)
         @response.status    = status
         @response.write body
+      else
+        @response.body   = ["OK"]
+        @response.status = 200
       end
-    # rescue ::Exception => boom
-    #   handle_exception!(boom)
+    rescue ::Exception => boom
+      handle_exception!(boom)
     end
     
     def respond!

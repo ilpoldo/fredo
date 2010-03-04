@@ -49,9 +49,9 @@ describe Fredo do
   end
   
   context "parameters" do
-    it "should parse url parameters" do
+    it "parses url parameters" do
       
-      Fredo.get 'http://www.twitter.com/:name' do |params|
+      Fredo.get 'http://www.twitter.com/:name' do
         [200, {"Content-Type" => "text/html"}, "It ain't #{params[:name]} talking"]
       end
       
@@ -59,8 +59,8 @@ describe Fredo do
       response.read.should include('It ain\'t sam')
     end
     
-    it "should play nice with regex" do
-      Fredo.get 'http://www.google.com/*' do |params|
+    it "plays nice with regex" do
+      Fredo.get 'http://www.google.com/*' do
         [200, {"Content-Type" => "text/html"}, "Everything google!"]
       end
 
