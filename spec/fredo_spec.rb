@@ -57,6 +57,15 @@ describe Fredo do
       
       response = open('http://www.twitter.com/sam')
       response.read.should include('It ain\'t sam')
+    end
+    
+    it "should play nice with regex" do
+      Fredo.get 'http://www.google.com/*' do |params|
+        [200, {"Content-Type" => "text/html"}, "Everything google!"]
+      end
+
+      response = open('http://google.com/something')
+      response.read.should include('Everything google!')
       
     end
   end
