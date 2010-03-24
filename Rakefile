@@ -8,7 +8,7 @@ begin
     gem.summary = %Q{Mocks web services by plugging Net::Http straight into Rack}
     gem.description = %Q{Mocks web services by plugging Net::Http straight into Rack}
     gem.email = "ilpoldo@gmail.com"
-    gem.homepage = "http://github.com/ilpoldo@gmail.com/fredo"
+    gem.homepage = "http://github.com/ilpoldo/fredo"
     gem.authors = ["ilpoldo"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
