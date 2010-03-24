@@ -6,10 +6,15 @@ I know it was you, Fredo[http://www.youtube.com/watch?v=FcFlp6kl508]
 I needed a slightly more articulated stub behaviour than the one provided by fakeweb[http://github.com/chrisk/fakeweb] to mimic S3 uploads and external APIs to process my attachments.
 Inside my simple cucumber steps.
 
-To install
-
-    # in config/environments/test.rb, config/environments/cucumber.rb
+== Install
+On the console:
+    >> gem install fredo
+    
+In your app:
+    # config/environments/test.rb, config/environments/cucumber.rb
     config.gem 'fredo'
+
+== Usage
 
 I borrowed the sinatra router, fakeweb's Net::Http extension and glued them together with Rack like returns and accepts:
 
