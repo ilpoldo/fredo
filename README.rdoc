@@ -1,20 +1,33 @@
 = Fredo
-===== Mocks web services by plugging Net::Http straight into Rack
+==== Stubs web services by plugging a sinatra-y DSL on Net::Http 
 
 I know it was you, Fredo[http://www.youtube.com/watch?v=FcFlp6kl508]
 
-This project is heavily inspired by fakeweb.
+I needed a slightly more articulated stub behaviour than the one provided by fakeweb[http://github.com/chrisk/fakeweb] to mimic S3 uploads and external APIs to process my attachments.
+Inside my simple cucumber steps.
 
-It started when I needed to mock comprehensively a project in cucumber.
-I want a way to mock some web services in an easy DSL like sinatra; my conclusion
-was to build a Rack adapter that plugs straight into Net::Http requests.
+To install
 
----
+    # in config/environments/test.rb, config/environments/cucumber.rb
+    config.gem 'fredo'
+
+I borrowed the sinatra router, fakeweb's Net::Http extension and glued them together with Rack like returns and accepts:
+
+    # and in your s3_steps.rb or what not:
+    Fredo.put "http://s3.amazonaws.com/*/:size.:ext" do
+      [200, {}, 'OK']
+    end
+
+    Fredo.get "http://s3.amazonaws.com/*/:size.:ext" do
+      fixture_path = File.expand_path("../../support/s3/placeholder_#{params[:size]}.#{params[:ext]}", __FILE__)
+      [200, {'ContentType' => "image/#{params[:ext]}"}, File.read]
+    end
+    
+  
 == Bugs
-This is in a very early stage, feel free to provide feedback. Please use the Github
-issues.
+This is in a very early stage for the project, feel free to provide feedback. Please use the Github issues.
 
----
+
 == Note on Patches/Pull Requests
  
 * Fork the project.
