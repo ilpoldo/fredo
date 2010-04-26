@@ -41,6 +41,9 @@ module Net  #:nodoc: all
       case request_body
       when nil    then body = StringIO.new
       when String then body = StringIO.new(body)
+      when File then body
+      else
+        body = StringIO.new(body.to_s)
       end
         
       uri = URI.parse(request.path)
