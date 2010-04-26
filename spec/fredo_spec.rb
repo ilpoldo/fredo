@@ -53,7 +53,7 @@ describe Fredo do
       
       url = URI.parse 'http://postyourthoughts.com'
       http = Net::HTTP.new(url.host)
-      http.post('/', 'query=foo', 'content-type' => 'text/plain').body.should eql([body])
+      http.post('/', 'query=foo', 'content-type' => 'text/plain').body.should eql(body)
     end
     
   end

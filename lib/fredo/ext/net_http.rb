@@ -67,7 +67,6 @@ module Net  #:nodoc: all
       # @socket = Net::HTTP.socket_type.new
       # Perform the request
       status, header, body = Fredo.call(rack_env)
-      # body = body.to_s # should write to rocket or do something fancier?
       
       response = Net::HTTPResponse.send(:response_class, "#{status}").new("1.0", "#{status}", body)
       response.instance_variable_set(:@body, body)
@@ -75,8 +74,8 @@ module Net  #:nodoc: all
       response.instance_variable_set(:@read, true)
       
       def response.read_body(*args, &block)
-        yield @body if block_given?
-        @body
+        yield @body.join("\n") if block_given?
+        @body.join("\n")
       end
 
       yield response if block_given?
