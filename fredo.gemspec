@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fredo}
-  s.version = "0.1.1"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ilpoldo"]
-  s.date = %q{2010-03-04}
+  s.date = %q{2010-04-23}
   s.description = %q{Mocks web services by plugging Net::Http straight into Rack}
   s.email = %q{ilpoldo@gmail.com}
   s.extra_rdoc_files = [
@@ -29,12 +29,13 @@ Gem::Specification.new do |s|
      "lib/fredo/ext/net_http.rb",
      "lib/fredo/handler.rb",
      "lib/fredo/registry.rb",
+     "lib/fredo/response.rb",
      "lib/fredo/stub_socket.rb",
      "spec/fredo_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/ilpoldo@gmail.com/fredo}
+  s.homepage = %q{http://github.com/ilpoldo/fredo}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}

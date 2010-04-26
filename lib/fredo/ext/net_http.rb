@@ -38,6 +38,11 @@ module Net  #:nodoc: all
     def request_with_fredo(request, body = nil, &block)
       request_body = body
       
+      case request_body
+      when nil    then body = StringIO.new
+      when String then body = StringIO.new(body)
+      end
+        
       uri = URI.parse(request.path)
       protocol = use_ssl? ? "https" : "http"
       full_path = "#{protocol}://#{self.address}:#{self.port}#{request.path}"
@@ -50,7 +55,7 @@ module Net  #:nodoc: all
                  'SERVER_PORT'       => self.port,
                  'rack.version'      => [1,1],
                  'rack.url_scheme'   => protocol,
-                 'rack.input'        => body || StringIO.new,
+                 'rack.input'        => body,
                  'rack.errors'       => $stderr,
                  'rack.multithread'  => true,
                  'rack.multiprocess' => true,
