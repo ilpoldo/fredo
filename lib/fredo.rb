@@ -50,6 +50,11 @@ module Fredo
     @allow_net_connect || true
   end
   
+  # Returns an array that stores every request intercepted by fredo
+  def self.books
+    @books ||= []
+  end
+  
   # This exception is raised if you set <tt>Fredo.allow_net_connect =
   # false</tt> and subsequently try to make a request to a URI you haven't
   # stubbed.

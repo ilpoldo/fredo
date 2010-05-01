@@ -73,6 +73,20 @@ describe Fredo do
     
   end
   
+  context "tracks requests" do
+    
+    it "saves every request" do
+      Fredo.get 'http://www.twitter.com/:name' do
+        "It ain't #{params[:name]} talking"
+      end
+      
+      response = open('http://www.twitter.com/sam')
+      
+      Fredo.books.last.host.should eql('www.twitter.com')
+    end
+    
+  end
+  
   context "parameters" do
     it "parses url parameters" do
       
