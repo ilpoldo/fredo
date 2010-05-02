@@ -52,7 +52,8 @@ module Fredo
             Fredo.books << {:path => path,
                             :params => @params,
                             :method => @request.request_method,
-                            :host => @request.host}
+                            :host => @request.host,
+                            :body => @request.body.read}
             perform!(&block)
             return
           end

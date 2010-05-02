@@ -81,8 +81,7 @@ describe Fredo do
       end
       
       response = open('http://www.twitter.com/sam')
-      
-      Fredo.books.last.host.should eql('www.twitter.com')
+      Fredo.books.last[:host].should eql('www.twitter.com')
     end
     
   end
