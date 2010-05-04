@@ -116,5 +116,18 @@ describe Fredo do
       response.read.should include('Everything google!')
       
     end
+    
+    it "allows access to the request body" do
+      
+      body = 'some gossip'
+      
+      Fredo.post 'http://www.gossip.com' do
+        "I heard #{request.body.read}"
+      end
+      
+      http = Net::HTTP.new('www.gossip.com')
+      http.post('/', body, 'content-type' => 'text/plain').body.should eql(body)
+    end
+    
   end
 end

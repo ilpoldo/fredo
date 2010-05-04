@@ -54,6 +54,8 @@ module Fredo
                             :method => @request.request_method,
                             :host => @request.host,
                             :body => @request.body.read}
+            @request.body.rewind
+            
             perform!(&block)
             return
           end
