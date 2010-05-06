@@ -126,8 +126,19 @@ describe Fredo do
       end
       
       http = Net::HTTP.new('www.gossip.com')
-      http.post('/', body, 'content-type' => 'text/plain').body.should eql(body)
+      http.post('/', body, 'Content-Type' => 'text/plain').body.should eql(body)
     end
     
+  end
+  
+  context "headers" do
+    it "keeps request headers" do
+      Fredo.post 'http://www.headheavy.com' do
+        "I got #{request.env['CONTENT_TYPE']}"
+      end
+
+      http = Net::HTTP.new('www.headheavy.com')
+      http.post('/', '<foo></foo>', 'content-type' => 'application/xml').body.should eql('I got application/xml')
+    end
   end
 end

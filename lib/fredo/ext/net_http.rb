@@ -50,27 +50,31 @@ module Net  #:nodoc: all
       protocol = use_ssl? ? "https" : "http"
       full_path = "#{protocol}://#{self.address}:#{self.port}#{request.path}"
       
-      rack_env ={'REQUEST_METHOD'    => request.method,
-                 'SCRIPT_NAME'       => '',
-                 'PATH_INFO'         => uri.path,
-                 'QUERY_STRING'      => (uri.query || ''),
-                 'SERVER_NAME'       => self.address,
-                 'SERVER_PORT'       => self.port,
-                 'rack.version'      => [1,1],
-                 'rack.url_scheme'   => protocol,
-                 'rack.input'        => body,
-                 'rack.errors'       => $stderr,
-                 'rack.multithread'  => true,
-                 'rack.multiprocess' => true,
-                 'rack.run_once'     => false}
+      # It's for testing, we care about all the headers
+      request_headers = request.instance_variable_get :@header
+      request_headers = Hash[*request_headers.map {|k,v| [String(k).upcase.gsub(%r{[^_0-9A-Z]},"_"),v]}.flatten]
+
+      rack_env =request_headers.merge({'REQUEST_METHOD'    => request.method,
+                                       'SCRIPT_NAME'       => '',
+                                       'PATH_INFO'         => uri.path,
+                                       'QUERY_STRING'      => (uri.query || ''),
+                                       'SERVER_NAME'       => self.address,
+                                       'SERVER_PORT'       => self.port,
+                                       'rack.version'      => [1,1],
+                                       'rack.url_scheme'   => protocol,
+                                       'rack.input'        => body,
+                                       'rack.errors'       => $stderr,
+                                       'rack.multithread'  => true,
+                                       'rack.multiprocess' => true,
+                                       'rack.run_once'     => false})
 
       # @socket = Net::HTTP.socket_type.new
       # Perform the request
-      status, header, body = Fredo.call(rack_env)
+      status, headers, body = Fredo.call(rack_env)
       
       response = Net::HTTPResponse.send(:response_class, "#{status}").new("1.0", "#{status}", body)
       response.instance_variable_set(:@body, body)
-      header.each { |name, value| response[name] = value }
+      headers.each { |name, value| response[name] = value }
       response.instance_variable_set(:@read, true)
       
       def response.read_body(*args, &block)

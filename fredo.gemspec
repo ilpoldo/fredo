@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fredo}
-  s.version = "0.1.8"
+  s.version = "0.1.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ilpoldo"]
-  s.date = %q{2010-05-02}
+  s.date = %q{2010-05-04}
   s.description = %q{Mocks web services by plugging Net::Http straight into Rack}
   s.email = %q{ilpoldo@gmail.com}
   s.extra_rdoc_files = [
