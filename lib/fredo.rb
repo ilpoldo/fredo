@@ -7,6 +7,7 @@ require 'fredo/stub_socket'
 require 'fredo/registry'
 require 'fredo/handler'
 require 'fredo/response'
+require 'fredo/shorthands'
 
 module Fredo
 
@@ -78,4 +79,6 @@ module Fredo
   def self.forget
     Registry.clear
   end
+  
+  extend Fredo::Shorthands
 end

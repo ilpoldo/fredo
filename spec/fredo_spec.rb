@@ -36,11 +36,18 @@ describe Fredo do
       body = "Don't trust this website."
       
       Fredo.get 'https://web-bank.com' do
-        body
-      end
-      
+        if env['rack.url_scheme'] == 'https'
+          body
+        else
+          'This is even less trustworthy'
+        end
+      end      
       response = open('https://web-bank.com')
       response.read.should eql(body)
+      
+      response = open('http://web-bank.com')
+      response.read.should eql('This is even less trustworthy')
+      
       # response.header["Content-Type"].should eql("text/html")
     end
     
@@ -126,7 +133,7 @@ describe Fredo do
       end
       
       http = Net::HTTP.new('www.gossip.com')
-      http.post('/', body, 'Content-Type' => 'text/plain').body.should eql(body)
+      http.post('/', body, 'Content-Type' => 'text/plain').body.should eql("I heard #{body}")
     end
     
   end
