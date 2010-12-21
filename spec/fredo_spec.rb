@@ -104,4 +104,18 @@ describe Fredo do
       
     end
   end
+  
+  context "serving static files" do
+    it "serves binary files" do
+      fixture_path = File.expand_path("../fixtures/FredoCorleone.jpg", File.dirname(__FILE__))
+      
+      Fredo.get 'http://fakeimage.com/*.jpg' do
+        fixture_path = File.expand_path("fixtures/FredoCorleone.jpg", File.dirname(__FILE__))
+        [200, {'ContentType' => "image/jpg"}, File.open(fixture_path).read]
+      end
+      
+      response = open('http://fakeimage.com/test.jpg')
+      response.read.should eql(File.open(fixture_path).read)
+    end
+  end
 end
