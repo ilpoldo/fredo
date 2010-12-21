@@ -36,11 +36,18 @@ describe Fredo do
       body = "Don't trust this website."
       
       Fredo.get 'https://web-bank.com' do
-        body
-      end
-      
+        if env['rack.url_scheme'] == 'https'
+          body
+        else
+          'This is even less trustworthy'
+        end
+      end      
       response = open('https://web-bank.com')
       response.read.should eql(body)
+      
+      response = open('http://web-bank.com')
+      response.read.should eql('This is even less trustworthy')
+      
       # response.header["Content-Type"].should eql("text/html")
     end
     
@@ -69,6 +76,19 @@ describe Fredo do
       # Automate?
       Fredo.forget
       Fredo::Registry.routes.should be_empty
+    end
+    
+  end
+  
+  context "tracks requests" do
+    
+    it "saves every request" do
+      Fredo.get 'http://www.twitter.com/:name' do
+        "It ain't #{params[:name]} talking"
+      end
+      
+      response = open('http://www.twitter.com/sam')
+      Fredo.books.last[:host].should eql('www.twitter.com')
     end
     
   end
@@ -102,6 +122,30 @@ describe Fredo do
       response = open('http://google.com/something')
       response.read.should include('Everything google!')
       
+    end
+    
+    it "allows access to the request body" do
+      
+      body = 'some gossip'
+      
+      Fredo.post 'http://www.gossip.com' do
+        "I heard #{request.body.read}"
+      end
+      
+      http = Net::HTTP.new('www.gossip.com')
+      http.post('/', body, 'Content-Type' => 'text/plain').body.should eql("I heard #{body}")
+    end
+    
+  end
+  
+  context "headers" do
+    it "keeps request headers" do
+      Fredo.post 'http://www.headheavy.com' do
+        "I got #{request.env['CONTENT_TYPE']}"
+      end
+
+      http = Net::HTTP.new('www.headheavy.com')
+      http.post('/', '<foo></foo>', 'content-type' => 'application/xml').body.should eql('I got application/xml')
     end
   end
   

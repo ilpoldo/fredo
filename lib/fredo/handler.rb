@@ -48,6 +48,14 @@ module Fredo
                 {}
               end
             @params.merge!(params)
+            
+            Fredo.books << {:path => path,
+                            :params => @params,
+                            :method => @request.request_method,
+                            :host => @request.host,
+                            :body => @request.body.read}
+            @request.body.rewind
+            
             perform!(&block)
             return
           end
